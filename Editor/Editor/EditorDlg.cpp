@@ -75,6 +75,10 @@ void CEditorDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT4, m_strDesc);
 	DDX_Control(pDX, IDC_COMBO_FILTER, m_cboxFilter);
 	DDX_Control(pDX, IDC_LIST_CARD, m_listCard);
+	DDV_MaxChars(pDX, m_strName, 20);
+	DDV_MaxChars(pDX, m_strSeries, 20);
+	DDV_MaxChars(pDX, m_strAttack, 20);
+	DDV_MaxChars(pDX, m_strDesc, 200);
 }
 
 BEGIN_MESSAGE_MAP(CEditorDlg, CDialog)
@@ -87,6 +91,7 @@ BEGIN_MESSAGE_MAP(CEditorDlg, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON_REMOVE, &CEditorDlg::OnBnClickedButtonRemove)
 	ON_CBN_SELCHANGE(IDC_COMBO_TYPE, &CEditorDlg::OnCbnSelchangeComboType)
 	ON_CBN_SELCHANGE(IDC_COMBO_FILTER, &CEditorDlg::OnCbnSelchangeComboFilter)
+	ON_BN_CLICKED(IDC_BUTTON_PREVIEW, &CEditorDlg::OnBnClickedButtonPreview)
 END_MESSAGE_MAP()
 
 
@@ -208,4 +213,16 @@ void CEditorDlg::OnCbnSelchangeComboType()
 void CEditorDlg::OnCbnSelchangeComboFilter()
 {
 	// TODO: Add your control notification handler code here
+}
+
+void CEditorDlg::OnBnClickedButtonPreview()
+{
+	// TODO: Add your control notification handler code here
+	UpdateData(TRUE);
+
+	//static_cast<CEdit*>(GetDlgItem(IDC_EDIT_TYPE))->SetWindowText(m_cboxType.GetWindowText());
+	static_cast<CEdit*>(GetDlgItem(IDC_EDIT_NAME))->SetWindowText(m_strName);
+	static_cast<CEdit*>(GetDlgItem(IDC_EDIT_SERIES))->SetWindowText(m_strSeries);
+	static_cast<CEdit*>(GetDlgItem(IDC_EDIT_ATTACK))->SetWindowText(m_strAttack);
+	static_cast<CEdit*>(GetDlgItem(IDC_EDIT_DESC))->SetWindowText(m_strDesc);
 }

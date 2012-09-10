@@ -23,9 +23,10 @@
 #define IDC_COMBO_TYPE                  1015
 #define IDC_COMBO_FILTER                1016
 #define IDC_BUTTON_SAVE                 1017
-#define IDC_BUTTON_DELETE               1018
 #define IDC_BUTTON_REMOVE               1018
 #define IDC_BUTTON_PIC                  1019
+#define IDC_BUTTON_SAVE2                1020
+#define IDC_BUTTON_PREVIEW              1020
 
 // Next default values for new objects
 // 

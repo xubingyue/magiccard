@@ -37,6 +37,7 @@ public:
 	afx_msg void OnBnClickedButtonRemove();
 	afx_msg void OnCbnSelchangeComboType();
 	afx_msg void OnCbnSelchangeComboFilter();
+	afx_msg void OnBnClickedButtonPreview();
 	CComboBox m_cboxType;
 	CString m_strName;
 	CString m_strSeries;
