@@ -3,6 +3,8 @@
 //
 
 #pragma once
+#include "afxwin.h"
+#include "afxcmn.h"
 
 
 // CEditorDlg dialog
@@ -30,5 +32,16 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
 public:
-	afx_msg void OnStnClickedPicture();
+	afx_msg void OnBnClickedButtonPic();
+	afx_msg void OnBnClickedButtonSave();
+	afx_msg void OnBnClickedButtonRemove();
+	afx_msg void OnCbnSelchangeComboType();
+	afx_msg void OnCbnSelchangeComboFilter();
+	CComboBox m_cboxType;
+	CString m_strName;
+	CString m_strSeries;
+	CString m_strAttack;
+	CString m_strDesc;
+	CComboBox m_cboxFilter;
+	CListCtrl m_listCard;
 };

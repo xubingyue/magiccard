@@ -43,12 +43,24 @@ END_MESSAGE_MAP()
 
 
 // CEditorDlg dialog
-
+static const TCHAR* g_strCardType[] = 
+{
+	_T("None"),
+	_T("Monster Level 1"),
+	_T("Monster Level 2"),
+	_T("Monster Level 3"),
+	_T("Magic"),
+	_T("Trap"),
+};
 
 
 
 CEditorDlg::CEditorDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CEditorDlg::IDD, pParent)
+	, m_strName(_T(""))
+	, m_strSeries(_T(""))
+	, m_strAttack(_T(""))
+	, m_strDesc(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -56,6 +68,13 @@ CEditorDlg::CEditorDlg(CWnd* pParent /*=NULL*/)
 void CEditorDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_COMBO_TYPE, m_cboxType);
+	DDX_Text(pDX, IDC_EDIT1, m_strName);
+	DDX_Text(pDX, IDC_EDIT2, m_strSeries);
+	DDX_Text(pDX, IDC_EDIT3, m_strAttack);
+	DDX_Text(pDX, IDC_EDIT4, m_strDesc);
+	DDX_Control(pDX, IDC_COMBO_FILTER, m_cboxFilter);
+	DDX_Control(pDX, IDC_LIST_CARD, m_listCard);
 }
 
 BEGIN_MESSAGE_MAP(CEditorDlg, CDialog)
@@ -63,7 +82,11 @@ BEGIN_MESSAGE_MAP(CEditorDlg, CDialog)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	//}}AFX_MSG_MAP
-	ON_STN_CLICKED(IDC_PICTURE, &CEditorDlg::OnStnClickedPicture)
+	ON_BN_CLICKED(IDC_BUTTON_PIC, &CEditorDlg::OnBnClickedButtonPic)
+	ON_BN_CLICKED(IDC_BUTTON_SAVE, &CEditorDlg::OnBnClickedButtonSave)
+	ON_BN_CLICKED(IDC_BUTTON_REMOVE, &CEditorDlg::OnBnClickedButtonRemove)
+	ON_CBN_SELCHANGE(IDC_COMBO_TYPE, &CEditorDlg::OnCbnSelchangeComboType)
+	ON_CBN_SELCHANGE(IDC_COMBO_FILTER, &CEditorDlg::OnCbnSelchangeComboFilter)
 END_MESSAGE_MAP()
 
 
@@ -99,6 +122,15 @@ BOOL CEditorDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	// TODO: Add extra initialization here
+	int nSize = sizeof(g_strCardType) / sizeof (g_strCardType[0]);
+	for (int i = 1; i < nSize; ++i)
+	{
+		m_cboxType.AddString(g_strCardType[i]);
+	}
+	for (int i = 0; i < nSize; ++i)
+	{
+		m_cboxFilter.AddString(g_strCardType[i]);
+	}
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -153,7 +185,27 @@ HCURSOR CEditorDlg::OnQueryDragIcon()
 }
 
 
-void CEditorDlg::OnStnClickedPicture()
+void CEditorDlg::OnBnClickedButtonPic()
+{
+	// TODO: Add your control notification handler code here
+}
+
+void CEditorDlg::OnBnClickedButtonSave()
+{
+	// TODO: Add your control notification handler code here
+}
+
+void CEditorDlg::OnBnClickedButtonRemove()
+{
+	// TODO: Add your control notification handler code here
+}
+
+void CEditorDlg::OnCbnSelchangeComboType()
+{
+	// TODO: Add your control notification handler code here
+}
+
+void CEditorDlg::OnCbnSelchangeComboFilter()
 {
 	// TODO: Add your control notification handler code here
 }
