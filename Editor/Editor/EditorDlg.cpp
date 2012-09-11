@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "Editor.h"
 #include "EditorDlg.h"
+#include "CardData.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -43,16 +44,6 @@ END_MESSAGE_MAP()
 
 
 // CEditorDlg dialog
-static const TCHAR* g_strCardType[] = 
-{
-	_T("None"),
-	_T("Monster Level 1"),
-	_T("Monster Level 2"),
-	_T("Monster Level 3"),
-	_T("Magic"),
-	_T("Trap"),
-};
-
 
 
 CEditorDlg::CEditorDlg(CWnd* pParent /*=NULL*/)
@@ -127,15 +118,17 @@ BOOL CEditorDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	// TODO: Add extra initialization here
-	int nSize = sizeof(g_strCardType) / sizeof (g_strCardType[0]);
+	int nSize = sizeof(g_szCardType) / sizeof (g_szCardType[0]);
 	for (int i = 1; i < nSize; ++i)
 	{
-		m_cboxType.AddString(g_strCardType[i]);
+		m_cboxType.AddString(g_szCardType[i]);
 	}
+	m_cboxType.SetCurSel(0);
 	for (int i = 0; i < nSize; ++i)
 	{
-		m_cboxFilter.AddString(g_strCardType[i]);
+		m_cboxFilter.AddString(g_szCardType[i]);
 	}
+	m_cboxFilter.SetCurSel(0);
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -198,6 +191,18 @@ void CEditorDlg::OnBnClickedButtonPic()
 void CEditorDlg::OnBnClickedButtonSave()
 {
 	// TODO: Add your control notification handler code here
+	CString strType;
+	m_cboxType.GetLBText(m_cboxType.GetCurSel(), strType);
+
+	SCard aCard;
+	aCard.uId = 0;
+	aCard.nType = StringToType(strType.GetBuffer());
+	aCard.strName = m_strName.GetBuffer();
+	aCard.strSeries = m_strSeries.GetBuffer();
+	aCard.strDesc = m_strDesc.GetBuffer();
+	aCard.nAttack = _wtoi(m_strAttack.GetBuffer());
+
+	CCardData::Instance().AddCard(aCard);
 }
 
 void CEditorDlg::OnBnClickedButtonRemove()
@@ -220,7 +225,10 @@ void CEditorDlg::OnBnClickedButtonPreview()
 	// TODO: Add your control notification handler code here
 	UpdateData(TRUE);
 
-	//static_cast<CEdit*>(GetDlgItem(IDC_EDIT_TYPE))->SetWindowText(m_cboxType.GetWindowText());
+	CString strType;
+	m_cboxType.GetLBText(m_cboxType.GetCurSel(), strType);
+
+	static_cast<CEdit*>(GetDlgItem(IDC_EDIT_TYPE))->SetWindowText(strType);
 	static_cast<CEdit*>(GetDlgItem(IDC_EDIT_NAME))->SetWindowText(m_strName);
 	static_cast<CEdit*>(GetDlgItem(IDC_EDIT_SERIES))->SetWindowText(m_strSeries);
 	static_cast<CEdit*>(GetDlgItem(IDC_EDIT_ATTACK))->SetWindowText(m_strAttack);
