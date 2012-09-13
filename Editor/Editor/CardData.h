@@ -11,6 +11,7 @@ typedef struct _SCard
 	std::wstring	strName;
 	std::wstring	strSeries;
 	std::wstring	strDesc;
+	std::wstring	strFileName;
 }
 SCard;
 

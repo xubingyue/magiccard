@@ -172,6 +172,8 @@ void CEditorDlg::OnPaint()
 	else
 	{
 		CDialog::OnPaint();
+		CDialog::UpdateWindow();
+		ShowPicture();
 	}
 }
 
@@ -186,6 +188,40 @@ HCURSOR CEditorDlg::OnQueryDragIcon()
 void CEditorDlg::OnBnClickedButtonPic()
 {
 	// TODO: Add your control notification handler code here
+	static TCHAR szFilter[] = _T("JPG Files (*.jpg)|*.jpg|BMP Files (*.bmp)|*.bmp|PNG Files (*.png)|*.png|All Files (*.*)|*.*||");
+	CFileDialog dlg(TRUE, _T("BMP"), NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilter);
+	if (dlg.DoModal() == IDOK)
+	{
+		m_strPictPathName = dlg.GetPathName();
+		ShowPicture();
+	}
+}
+
+void CEditorDlg::ShowPicture()
+{
+	if (m_strPictPathName.IsEmpty())
+	{
+		return;
+	}
+
+	CDC* pDC = GetDlgItem(IDC_PICTURE)->GetDC();
+	HDC hDC = pDC->GetSafeHdc();
+
+	CRect rect;
+	GetDlgItem(IDC_PICTURE)->GetClientRect(&rect);
+
+	CImage image; 
+	HRESULT hr = image.Load(m_strPictPathName);
+	if (S_OK == hr)
+	{
+		image.Draw(hDC, rect);
+	}
+	else
+	{
+		pDC->DrawText(m_strPictPathName, rect, 0);
+
+	}
+	ReleaseDC(pDC);
 }
 
 void CEditorDlg::OnBnClickedButtonSave()
@@ -200,6 +236,7 @@ void CEditorDlg::OnBnClickedButtonSave()
 	aCard.strName = m_strName.GetBuffer();
 	aCard.strSeries = m_strSeries.GetBuffer();
 	aCard.strDesc = m_strDesc.GetBuffer();
+	aCard.strFileName = m_strPictPathName.GetBuffer();
 	aCard.nAttack = _wtoi(m_strAttack.GetBuffer());
 
 	CCardData::Instance().AddCard(aCard);

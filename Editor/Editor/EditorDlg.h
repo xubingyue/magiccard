@@ -31,6 +31,9 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
+
+	void ShowPicture();
+
 public:
 	afx_msg void OnBnClickedButtonPic();
 	afx_msg void OnBnClickedButtonSave();
@@ -43,6 +46,7 @@ public:
 	CString m_strSeries;
 	CString m_strAttack;
 	CString m_strDesc;
+	CString m_strPictPathName;
 	CComboBox m_cboxFilter;
 	CListCtrl m_listCard;
 };
