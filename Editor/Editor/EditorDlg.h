@@ -33,6 +33,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 	void ShowPicture();
+	void Preview();
 
 public:
 	afx_msg void OnBnClickedButtonPic();
@@ -49,4 +50,8 @@ public:
 	CString m_strPictPathName;
 	CComboBox m_cboxFilter;
 	CListCtrl m_listCard;
+	afx_msg void OnEnChangeEdit1();
+	afx_msg void OnEnChangeEdit2();
+	afx_msg void OnEnChangeEdit3();
+	afx_msg void OnEnChangeEdit4();
 };

@@ -83,6 +83,10 @@ BEGIN_MESSAGE_MAP(CEditorDlg, CDialog)
 	ON_CBN_SELCHANGE(IDC_COMBO_TYPE, &CEditorDlg::OnCbnSelchangeComboType)
 	ON_CBN_SELCHANGE(IDC_COMBO_FILTER, &CEditorDlg::OnCbnSelchangeComboFilter)
 	ON_BN_CLICKED(IDC_BUTTON_PREVIEW, &CEditorDlg::OnBnClickedButtonPreview)
+	ON_EN_CHANGE(IDC_EDIT1, &CEditorDlg::OnEnChangeEdit1)
+	ON_EN_CHANGE(IDC_EDIT2, &CEditorDlg::OnEnChangeEdit2)
+	ON_EN_CHANGE(IDC_EDIT3, &CEditorDlg::OnEnChangeEdit3)
+	ON_EN_CHANGE(IDC_EDIT4, &CEditorDlg::OnEnChangeEdit4)
 END_MESSAGE_MAP()
 
 
@@ -184,6 +188,31 @@ HCURSOR CEditorDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+void CEditorDlg::ShowPicture()
+{
+	if (m_strPictPathName.IsEmpty())
+	{
+		return;
+	}
+
+	CDC* pDC = GetDlgItem(IDC_PICTURE)->GetDC();
+
+	CRect rect;
+	GetDlgItem(IDC_PICTURE)->GetClientRect(&rect);
+
+	CImage image; 
+	HRESULT hr = image.Load(m_strPictPathName);
+	if (S_OK == hr)
+	{
+		pDC->SetStretchBltMode(COLORONCOLOR); 
+		image.Draw(pDC->GetSafeHdc(), rect);
+	}
+	else
+	{
+		pDC->DrawText(m_strPictPathName, rect, DT_WORDBREAK | DT_EDITCONTROL | DT_CENTER);
+	}
+	ReleaseDC(pDC);
+}
 
 void CEditorDlg::OnBnClickedButtonPic()
 {
@@ -193,35 +222,22 @@ void CEditorDlg::OnBnClickedButtonPic()
 	if (dlg.DoModal() == IDOK)
 	{
 		m_strPictPathName = dlg.GetPathName();
-		ShowPicture();
+		Invalidate();
 	}
 }
 
-void CEditorDlg::ShowPicture()
+void CEditorDlg::Preview()
 {
-	if (m_strPictPathName.IsEmpty())
-	{
-		return;
-	}
+	UpdateData(TRUE);
 
-	CDC* pDC = GetDlgItem(IDC_PICTURE)->GetDC();
-	HDC hDC = pDC->GetSafeHdc();
+	CString strType;
+	m_cboxType.GetLBText(m_cboxType.GetCurSel(), strType);
 
-	CRect rect;
-	GetDlgItem(IDC_PICTURE)->GetClientRect(&rect);
-
-	CImage image; 
-	HRESULT hr = image.Load(m_strPictPathName);
-	if (S_OK == hr)
-	{
-		image.Draw(hDC, rect);
-	}
-	else
-	{
-		pDC->DrawText(m_strPictPathName, rect, 0);
-
-	}
-	ReleaseDC(pDC);
+	static_cast<CEdit*>(GetDlgItem(IDC_EDIT_TYPE))->SetWindowText(strType);
+	static_cast<CEdit*>(GetDlgItem(IDC_EDIT_NAME))->SetWindowText(m_strName);
+	static_cast<CEdit*>(GetDlgItem(IDC_EDIT_SERIES))->SetWindowText(m_strSeries);
+	static_cast<CEdit*>(GetDlgItem(IDC_EDIT_ATTACK))->SetWindowText(m_strAttack);
+	static_cast<CEdit*>(GetDlgItem(IDC_EDIT_DESC))->SetWindowText(m_strDesc);
 }
 
 void CEditorDlg::OnBnClickedButtonSave()
@@ -245,11 +261,24 @@ void CEditorDlg::OnBnClickedButtonSave()
 void CEditorDlg::OnBnClickedButtonRemove()
 {
 	// TODO: Add your control notification handler code here
+	m_strName.Empty();
+	m_strSeries.Empty();
+	m_strDesc.Empty();
+	m_strAttack.Empty();
+
+	UpdateData(FALSE);
+
+	static_cast<CEdit*>(GetDlgItem(IDC_EDIT_TYPE))->SetWindowText(_T(""));
+	static_cast<CEdit*>(GetDlgItem(IDC_EDIT_NAME))->SetWindowText(m_strName);
+	static_cast<CEdit*>(GetDlgItem(IDC_EDIT_SERIES))->SetWindowText(m_strSeries);
+	static_cast<CEdit*>(GetDlgItem(IDC_EDIT_ATTACK))->SetWindowText(m_strAttack);
+	static_cast<CEdit*>(GetDlgItem(IDC_EDIT_DESC))->SetWindowText(m_strDesc);
 }
 
 void CEditorDlg::OnCbnSelchangeComboType()
 {
 	// TODO: Add your control notification handler code here
+	Preview();
 }
 
 void CEditorDlg::OnCbnSelchangeComboFilter()
@@ -260,14 +289,50 @@ void CEditorDlg::OnCbnSelchangeComboFilter()
 void CEditorDlg::OnBnClickedButtonPreview()
 {
 	// TODO: Add your control notification handler code here
-	UpdateData(TRUE);
+	Preview();
+}
 
-	CString strType;
-	m_cboxType.GetLBText(m_cboxType.GetCurSel(), strType);
 
-	static_cast<CEdit*>(GetDlgItem(IDC_EDIT_TYPE))->SetWindowText(strType);
-	static_cast<CEdit*>(GetDlgItem(IDC_EDIT_NAME))->SetWindowText(m_strName);
-	static_cast<CEdit*>(GetDlgItem(IDC_EDIT_SERIES))->SetWindowText(m_strSeries);
-	static_cast<CEdit*>(GetDlgItem(IDC_EDIT_ATTACK))->SetWindowText(m_strAttack);
-	static_cast<CEdit*>(GetDlgItem(IDC_EDIT_DESC))->SetWindowText(m_strDesc);
+void CEditorDlg::OnEnChangeEdit1()
+{
+	// TODO:  If this is a RICHEDIT control, the control will not
+	// send this notification unless you override the CDialog::OnInitDialog()
+	// function and call CRichEditCtrl().SetEventMask()
+	// with the ENM_CHANGE flag ORed into the mask.
+
+	// TODO:  Add your control notification handler code here
+	Preview();
+}
+
+void CEditorDlg::OnEnChangeEdit2()
+{
+	// TODO:  If this is a RICHEDIT control, the control will not
+	// send this notification unless you override the CDialog::OnInitDialog()
+	// function and call CRichEditCtrl().SetEventMask()
+	// with the ENM_CHANGE flag ORed into the mask.
+
+	// TODO:  Add your control notification handler code here
+	Preview();
+}
+
+void CEditorDlg::OnEnChangeEdit3()
+{
+	// TODO:  If this is a RICHEDIT control, the control will not
+	// send this notification unless you override the CDialog::OnInitDialog()
+	// function and call CRichEditCtrl().SetEventMask()
+	// with the ENM_CHANGE flag ORed into the mask.
+
+	// TODO:  Add your control notification handler code here
+	Preview();
+}
+
+void CEditorDlg::OnEnChangeEdit4()
+{
+	// TODO:  If this is a RICHEDIT control, the control will not
+	// send this notification unless you override the CDialog::OnInitDialog()
+	// function and call CRichEditCtrl().SetEventMask()
+	// with the ENM_CHANGE flag ORed into the mask.
+
+	// TODO:  Add your control notification handler code here
+	Preview();
 }
