@@ -159,13 +159,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "TODO: <Company name>"
-            VALUE "FileDescription", "TODO: <File description>"
+            VALUE "CompanyName", "Gecent Inc."
+            VALUE "FileDescription", "Card Editor"
             VALUE "FileVersion", "1.0.0.1"
             VALUE "InternalName", "Editor.exe"
-            VALUE "LegalCopyright", "TODO: (c) <Company name>.  All rights reserved."
+            VALUE "LegalCopyright", "2012 (c) Gecent Inc.  All rights reserved."
             VALUE "OriginalFilename", "Editor.exe"
-            VALUE "ProductName", "TODO: <Product name>"
+            VALUE "ProductName", "Card Editor"
             VALUE "ProductVersion", "1.0.0.1"
         END
     END
